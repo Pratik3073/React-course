@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ChatBot</title>
+    <style>
+      .send-button{
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 12px 20px;  /* 12px vartical value 20px horizontal */
+        margin-left: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .chat-input{
+        padding: 12px 15px;
+        
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <!-- load babel external library -->
+    <script type="text/babel">
+      function ChatInput({chatMessages,setChatMesssage}) {
+        const [inputText, setInputText] = React.useState("");
+
+        function saveInputText(event) {
+          setInputText(event.target.value);
+        }
+
+        function sendMessage() {   // save new chat message to new varible
+          const newChatmessages = [
+            ...chatMessages,
+            {
+              message: inputText,
+              sender: "user",
+              id: crypto.randomUUID(),
+            },
+          ]
+
+
+          setChatMesssage(newChatmessages);
+          
+          const response = Chatbot.getResponse(inputText);  //chatbot is external library
+          
+          setChatMesssage([
+            ...newChatmessages,
+            {
+              message: response,
+              sender: "robot",
+              id: crypto.randomUUID(),
+            },
+          ]);
+
+
+          setInputText('');
+        }
+        return (
+          <>
+            {" "}
+            {/* React Fragments  group elements together without creating an extra <>*/}
+            <input
+              placeholder="send a message to chatbot "
+              size="30"
+              onChange={saveInputText}
+              value={inputText}  // controlled input
+              className="chat-input"
+            />
+            <button className="send-button" onClick={sendMessage}>send</button>
+          </>
+        );
+      }
+
+      function ChatMessage({ message, sender }) {
+        {
+          /* prorps make component reusable 
+                                 ChatMessage({messge,sender})*/
+        }
+        // const message= props.message;
+        // const sender = props.sender;
+        //const {message,sender} = props;  //Destructuring
+
+        //  if(sender === 'robot'){
+        //   return(
+        //     <div >  {/* div is a block element take up entire line by itself*/}
+        //       <img src="robot.png" alt="" width="50"/>
+        //       {message}
+        //    </div>
+        //   );
+        //  }
+
+        return (
+          <div>
+            {" "}
+            {/* div is a block element take up entire line by itself*/}
+            {sender === "robot" && (
+              <img src="robot.png" alt="" width="50" />
+            )}{" "}
+            {/*shortcut if statement geared operator &&*/}
+            {message}
+            {sender === "user" && <img src="user.png" alt="" width="50" />}
+          </div>
+        );
+      }
+
+      function ChatMessages({chatMessages }) {
+        return (
+          <>
+            {chatMessages.map((msg) => {
+              return (
+                <ChatMessage
+                  message={msg.message}
+                  sender={msg.sender}
+                  key={msg.id}
+                />
+              );
+            })}
+          </>
+        );
+      }
+
+      function App() {
+
+        const [chatMessages, setChatMesssage] = React.useState([
+          {
+            message: "hello chatbot",
+            sender: "user",
+            id: "id1",
+          },
+          {
+            message: "Hello! How Are You?",
+            sender: "robot",
+            id: "id2",
+          },
+          {
+            message: "can you get me todays date?",
+            sender: "user",
+            id: "id3",
+          },
+          {
+            message: "Today is 12 december",
+            sender: "robot",
+            id: "id4",
+          },
+        ]);
+
+        // const[chatMessages,setChatMesssage]=array // // array Destructuring  // the order matters  chatMessages get 1 value soo
+        // const chatMessages= array[0];
+        // const setChatMesssage= array[1];
+        return (
+          <>
+            <ChatInput 
+            chatMessages={chatMessages}
+            setChatMesssage={setChatMesssage}
+            />
+            <ChatMessages 
+            chatMessages={chatMessages}
+            />
+          </>
+        );
+      }
+
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />); //setup react /render - display something
+    </script>
+  </body>
+</html>
+
+<!-- 
+what is babel ?
+is javascript compiler 
+translates other languages into javascript
+
+when usig react we dont use normal JavaScript
+we use an enhancd version of Javascript = JSX
+JSX = javascript XML
+same as javascript but we can write HTML directly in our js code.
+
+Problem with jsx
+our web browser doesnt understand JSX
+need to translate JSXinto Javascript
+babel = tranlates JSX into javascript 
+
+-->
