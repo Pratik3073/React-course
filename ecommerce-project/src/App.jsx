@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 function App() {
   const [cart,setCart]=useState([]);
   useEffect(()=>{
-    axios.get("/api/cart-items")
+    axios.get("/api/cart-items?expand=product") // query parameter lets us add additional info to usr request
     .then((response)=>{
       setCart(response.data);
 
