@@ -12,14 +12,14 @@ export function HomePage() {
   useEffect(() => {
     // lets us control when some code runs
     axios
-      .get("http://localhost:3000/api/products")
+      .get("/api/products")
       // .then() runs only when the server successfully sends back a response
       .then((response) => {
         // response.data contains the actual data returned by the backend API
         setProducts(response.data);
       });
 
-      axios.get("http://localhost:3000/api/cart-items")
+      axios.get("/api/cart-items")
       .then((response)=>{
         setCart(response.data);
         
