@@ -1,34 +1,33 @@
 import "./CheckoutPage.css";
 import "./checkout-header.css";
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentSummery } from "./PaymentSummary";
 
-
 export function CheckoutPage({ cart }) {
- const [deliveryOptions,setdeliveryOptions] =useState([]);
- const [paymentSummery,setPaymentSummery] =useState(null);
+  const [deliveryOptions, setdeliveryOptions] = useState([]);
+  const [paymentSummery, setPaymentSummery] = useState(null);
 
-useEffect(()=>{
-  axios.get('/api/delivery-options?expand=estimatedDelivaryTime')
-  .then((response)=>{
-    setdeliveryOptions(response.data);
-  });
- 
-  axios.get('/api/payment-summary')
-  .then((response)=>{
-   setPaymentSummery(response.data);
-  })
+  useEffect(() => {
+    const fetchCheckoutData = async () => {
+      let response = await axios.get(
+        "/api/delivery-options?expand=estimatedDelivaryTime"
+      );
+      setdeliveryOptions(response.data);
 
+      response = await axios.get("/api/payment-summary");
 
+      setPaymentSummery(response.data);
+    };
 
-},[])
+    fetchCheckoutData();
+  }, []);
 
   return (
     <>
       <title>Checkout</title>
-      
+
       <div className="checkout-header">
         <div className="header-content">
           <div className="checkout-header-left-section">
@@ -56,9 +55,9 @@ useEffect(()=>{
         <div className="page-title">Review your order</div>
 
         <div className="checkout-grid">
-          <OrderSummary cart={cart} deliveryOptions={deliveryOptions}/>
+          <OrderSummary cart={cart} deliveryOptions={deliveryOptions} />
 
-          <PaymentSummery paymentSummery={paymentSummery}/>
+          <PaymentSummery paymentSummery={paymentSummery} />
         </div>
       </div>
     </>

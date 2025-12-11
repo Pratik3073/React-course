@@ -11,21 +11,31 @@ export function HomePage({cart}) {
  
 
   // axios.get() sends a GET request to the backend server URL
-  useEffect(() => {
-    // lets us control when some code runs
-    axios
-      .get("/api/products")
-      // .then() runs only when the server successfully sends back a response
-      .then((response) => {
-        // response.data contains the actual data returned by the backend API
-        setProducts(response.data);
-      });
+  useEffect( () => {    //inner function in useEffect shoud Not return a Promise
+  const getHomeData = async()=>{  // we need to create function in side a useEffect
+    const response= await axios.get("/api/products");
+    setProducts(response.data);
+  };
+   
+getHomeData();
+},[]); 
+
+
+
+    // // use Effect  lets us control when some code runs
+    //  await axios
+    //   .get("/api/products")
+    //   // .then() runs only when the server successfully sends back a response
+    //   .then((response) => {
+    //     // response.data contains the actual data returned by the backend API
+    //     setProducts(response.data);
+    //   });
 
      
       
 
 
-  },[]); // Dependency Array lets us control when useEffect runs when we empty [] it only reun once 
+  // Dependency Array lets us control when useEffect runs when we empty [] it only reun once 
         // StrictMode call useEffect tow time to catch bug 
 
 
