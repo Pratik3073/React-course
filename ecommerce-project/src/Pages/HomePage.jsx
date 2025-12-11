@@ -1,18 +1,25 @@
 import axios from "axios";
+import { useEffect ,useState} from "react";
 import "./HomePage.css";
 import { Header } from "../components/Header";
-import { products } from "../../staring_code/data/products";
+// import { products } from "../../staring_code/data/products";
 
 export function HomePage() {
-  // axios.get() sends a GET request to the backend server URL
-  axios
-    .get("http://localhost:3000/api/products")
+  const [products,setProducts] =useState([]);
 
-    // .then() runs only when the server successfully sends back a response
-    .then((response) => {
-      // response.data contains the actual data returned by the backend API
-      console.log(response.data);
-    });
+  // axios.get() sends a GET request to the backend server URL
+  useEffect(() => {
+    // lets us control when some code runs
+    axios
+      .get("http://localhost:3000/api/products")
+      // .then() runs only when the server successfully sends back a response
+      .then((response) => {
+        // response.data contains the actual data returned by the backend API
+        setProducts(response.data);
+      });
+  },[]); // Dependency Array lets us control when useEffect runs when we empty [] it only reun once 
+        // StrictMode call useEffect tow time to catch bug 
+
 
   // fetch('http://localhost:3000/api/products')
   // .then((response)=>{
