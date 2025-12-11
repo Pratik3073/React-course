@@ -4,9 +4,9 @@ import "./HomePage.css";
 import { Header } from "../components/Header";
 // import { products } from "../../staring_code/data/products";
 
-export function HomePage() {
+export function HomePage({cart}) {
   const [products,setProducts] =useState([]);
-  const [cart,setCart]=useState([]);
+ 
 
   // axios.get() sends a GET request to the backend server URL
   useEffect(() => {
@@ -19,12 +19,8 @@ export function HomePage() {
         setProducts(response.data);
       });
 
-      axios.get("/api/cart-items")
-      .then((response)=>{
-        setCart(response.data);
-        
-        })
-      .then
+     
+      
 
 
   },[]); // Dependency Array lets us control when useEffect runs when we empty [] it only reun once 
