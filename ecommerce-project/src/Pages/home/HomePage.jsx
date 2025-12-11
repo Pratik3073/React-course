@@ -6,7 +6,7 @@ import { Header } from "../../components/Header";
 import { ProductsGrid } from "./ProductsGrid";
 // import { products } from "../../staring_code/data/products";
 
-export function HomePage({cart}) {
+export function HomePage({cart,loadCart}) {
   const [products,setProducts] =useState([]);
  
 
@@ -52,7 +52,7 @@ getHomeData();
       <Header cart={cart}/>
 
       <div className="home-page">
-        <ProductsGrid products={products}/>
+        <ProductsGrid products={products} loadCart={loadCart}/>
       </div>
     </>
   );
