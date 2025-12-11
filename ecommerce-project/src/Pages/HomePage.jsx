@@ -1,15 +1,25 @@
+import axios from "axios";
 import "./HomePage.css";
 import { Header } from "../components/Header";
 import { products } from "../../staring_code/data/products";
 
-
 export function HomePage() {
-  fetch('http://localhost:3000/api/products')
-  .then((response)=>{
-      return response.json();
-      }).then((data)=>{
-        console.log(data);
-  });
+  // axios.get() sends a GET request to the backend server URL
+  axios
+    .get("http://localhost:3000/api/products")
+
+    // .then() runs only when the server successfully sends back a response
+    .then((response) => {
+      // response.data contains the actual data returned by the backend API
+      console.log(response.data);
+    });
+
+  // fetch('http://localhost:3000/api/products')
+  // .then((response)=>{
+  //     return response.json();
+  //     }).then((data)=>{
+  //       console.log(data);
+  // });
 
   return (
     <>
@@ -22,20 +32,19 @@ export function HomePage() {
             return (
               <div key={product.id} className="product-container">
                 <div className="product-image-container">
-                  <img
-                    className="product-image"
-                    src={product.image}
-                  />
+                  <img className="product-image" src={product.image} />
                 </div>
 
                 <div className="product-name limit-text-to-2-lines">
-                 {product.name}
+                  {product.name}
                 </div>
 
                 <div className="product-rating-container">
                   <img
                     className="product-rating-stars"
-                    src={`images/ratings/rating-${product.rating.stars*10}.png`}
+                    src={`images/ratings/rating-${
+                      product.rating.stars * 10
+                    }.png`}
                   />
                   <div className="product-rating-count link-primary">
                     {product.rating.count}
@@ -43,7 +52,7 @@ export function HomePage() {
                 </div>
 
                 <div className="product-price">
-                    {(product.priceCents /100).toFixed(2)}
+                  {(product.priceCents / 100).toFixed(2)}
                 </div>
 
                 <div className="product-quantity-container">
@@ -74,7 +83,6 @@ export function HomePage() {
               </div>
             );
           })}
-
         </div>
       </div>
     </>
