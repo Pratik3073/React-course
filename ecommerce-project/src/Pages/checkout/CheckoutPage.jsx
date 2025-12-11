@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentSummery } from "./PaymentSummary";
 
-export function CheckoutPage({ cart }) {
+export function CheckoutPage({ cart ,loadCart}) {
   const [deliveryOptions, setdeliveryOptions] = useState([]);
   const [paymentSummery, setPaymentSummery] = useState(null);
 
@@ -15,14 +15,17 @@ export function CheckoutPage({ cart }) {
         "/api/delivery-options?expand=estimatedDelivaryTime"
       );
       setdeliveryOptions(response.data);
-
-      response = await axios.get("/api/payment-summary");
-
-      setPaymentSummery(response.data);
     };
-
     fetchCheckoutData();
   }, []);
+  
+  useEffect(()=>{
+    const fetchPaymentData = async ()=>{
+     let  response = await axios.get("/api/payment-summary");
+      setPaymentSummery(response.data);
+    };
+    fetchPaymentData();
+  })
 
   return (
     <>
@@ -55,7 +58,7 @@ export function CheckoutPage({ cart }) {
         <div className="page-title">Review your order</div>
 
         <div className="checkout-grid">
-          <OrderSummary cart={cart} deliveryOptions={deliveryOptions} />
+          <OrderSummary cart={cart} deliveryOptions={deliveryOptions} loadCart={loadCart}/>
 
           <PaymentSummery paymentSummery={paymentSummery} />
         </div>

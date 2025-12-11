@@ -4,10 +4,11 @@ import axios from "axios";
 
 export function Product({product,loadCart}){
     const [quantity,setQuantity]=useState(1);
+
     const addToCart = async()=>{
         await axios.post('/api/cart-items',{  //this obj called req body
             productId:product.id,
-            quantity:quantity
+            quantity
         });
         await loadCart();
     };
